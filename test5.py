@@ -36,13 +36,13 @@ def load_csv(file_path):
         encoding = detect_encoding(file_path)
         return pd.read_csv(file_path, encoding=encoding)
     except Exception as e:
-        messagebox.showerror("Error", f"Failed to load CSV file: {e}")
+        messagebox.showerror("오류", f"CSV파일을 가져오는데 실패했습니다.: {e}")
         return None
 
 
 def load_csv_1():
     global df1
-    file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
+    file_path = filedialog.askopenfilename(filetypes=[("CSV 파일", "*.csv")])
     if file_path:
         df1 = load_csv(file_path)
         if df1 is not None:
@@ -54,7 +54,7 @@ def load_csv_1():
 
 def load_csv_2():
     global df2
-    file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
+    file_path = filedialog.askopenfilename(filetypes=[("CSV 파일", "*.csv")])
     if file_path:
         df2 = load_csv(file_path)
         if df2 is not None:
@@ -88,7 +88,7 @@ def merge_csv():
     if df1 is not None and df2 is not None:
         selected_key = key_menu.get()
         if not selected_key:
-            messagebox.showerror("Error", "Please select a key column for merging.")
+            messagebox.showerror("오류", "병합을 위한 키 열을 선택하십시오.")
             return
 
         df_to_merge = pd.merge(df1, df2, how='outer', on=selected_key)
@@ -96,11 +96,11 @@ def merge_csv():
         if save_path:
             try:
                 df_to_merge.to_csv(save_path, sep=",", index=False, encoding='utf-8-sig')
-                messagebox.showinfo("Success", f"CSV files merged and saved successfully as {save_path}")
+                messagebox.showinfo("성공", f"CSV 파일이 병합되어 {save_path}로 저장되었습니다.")
             except Exception as e:
-                messagebox.showerror("Error", f"Failed to save the CSV file: {e}")
+                messagebox.showerror("오류", f"CSV 파일을 저장하지 못했습니다: {e}")
     else:
-        messagebox.showerror("Error", "Please load two CSV files first.")
+        messagebox.showerror("오류", "두 개의 CSV 파일을 먼저 불러오세요.")
 
 
 # 비식별화 관련 함수들
@@ -180,9 +180,9 @@ def anonymize_csv():
             save_path_anonymized_columns = save_path.replace('.csv', '_anonymized_columns.csv')
             try:
                 df_to_anonymize[anonymized_columns].to_csv(save_path_anonymized_columns, index=False, encoding='utf-8-sig')
-                messagebox.showinfo("Success", f"Original columns saved successfully as {save_path_anonymized_columns}")
+                messagebox.showinfo("성공", f"원본 열이 {save_path_anonymized_columns}으로 저장되었습니다.")
             except Exception as e:
-                messagebox.showerror("Error", f"Failed to save the original columns CSV file: {e}")
+                messagebox.showerror("오류", f"원본 열을 저장하는 데 실패했습니다: {e}")
                 return
 
             # 비식별화 작업 수행
@@ -210,20 +210,20 @@ def anonymize_csv():
             save_path_anonymized = save_path.replace('.csv', '_anonymized.csv')
             try:
                 df_anonymized.to_csv(save_path_anonymized, index=False, encoding='utf-8-sig')
-                messagebox.showinfo("Success", f"Anonymized CSV file saved successfully as {save_path_anonymized}")
+                messagebox.showinfo("성공", f"익명화된 CSV 파일이 {save_path_anonymized}로 저장되었습니다.")
             except Exception as e:
-                messagebox.showerror("Error", f"Failed to save the anonymized CSV file: {e}")
+                messagebox.showerror("오류", f"익명화된 CSV 파일을 저장하지 못했습니다: {e}")
         else:
-            messagebox.showerror("Error", "Save path not specified.")
+            messagebox.showerror("오류", "저장 경로가 지정되지 않았습니다.")
     else:
-        messagebox.showerror("Error", "Please load a CSV file first.")
+        messagebox.showerror("오류", "CSV 파일을 먼저 불러오세요.")
 
 
 
 
 def load_csv_for_anonymize():
     global df_to_anonymize, anonymization_settings, anonymized_columns
-    file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
+    file_path = filedialog.askopenfilename(filetypes=[("CSV 파일", "*.csv")])
     if file_path:
         df_to_anonymize = load_csv(file_path)
         if df_to_anonymize is not None:
@@ -277,9 +277,9 @@ def add_column_for_anonymization(column_name, method_menu):
 #        if save_path_anonymized_columns:
 #            try:
 #                df_to_anonymize[anonymized_columns].to_csv(save_path_anonymized_columns, index=False)
-#                messagebox.showinfo("Success", f"Original columns saved successfully as {save_path_anonymized_columns}")
+#                messagebox.showinfo("성공", f"Original columns saved successfully as {save_path_anonymized_columns}")
 #            except Exception as e:
-#                messagebox.showerror("Error", f"Failed to save the CSV file: {e}")
+#                messagebox.showerror("오류", f"Failed to save the CSV file: {e}")
 
 
 def perform_anonymization():
@@ -308,9 +308,9 @@ def perform_anonymization():
         if save_path_anonymized:
             try:
                 df_anonymized.to_csv(save_path_anonymized, index=False)
-                messagebox.showinfo("Success", f"Anonymized CSV saved successfully as {save_path_anonymized}")
+                messagebox.showinfo("성공", f"익명화된 CSV가 {save_path_anonymized}로 저장되었습니다.")
             except Exception as e:
-                messagebox.showerror("Error", f"Failed to save the anonymized CSV file: {e}")
+                messagebox.showerror("오류", f"익명화된 CSV 파일을 저장하지 못했습니다: {e}")
 
 
 # GUI 설정
@@ -323,8 +323,8 @@ window.grid_columnconfigure(0, weight=1)
 tab_parent = ttk.Notebook(window)
 merge_tab = ttk.Frame(tab_parent)
 anonymize_tab = ttk.Frame(tab_parent)
-tab_parent.add(merge_tab, text="Merge CSVs")
-tab_parent.add(anonymize_tab, text="Anonymize CSV")
+tab_parent.add(merge_tab, text="CSV 병합")
+tab_parent.add(anonymize_tab, text="CSV 익명화")
 tab_parent.pack(expand=1, fill='both')
 
 # Merge CSV UI
@@ -338,10 +338,10 @@ frame_csv2.grid(row=0, column=2, padx=10, pady=10, sticky="nswe")
 frame_csv2.grid_rowconfigure(1, weight=1)
 frame_csv2.grid_columnconfigure(0, weight=1)
 
-label_csv1 = tk.Label(frame_csv1, text="CSV 1 Columns")
+label_csv1 = tk.Label(frame_csv1, text="CSV 1의 열")
 label_csv1.grid(row=0, column=0)
 
-label_csv2 = tk.Label(frame_csv2, text="CSV 2 Columns")
+label_csv2 = tk.Label(frame_csv2, text="CSV 2의 열")
 label_csv2.grid(row=0, column=0)
 
 listbox_csv1 = tk.Listbox(frame_csv1)
@@ -358,26 +358,26 @@ scrollbar_csv2 = tk.Scrollbar(frame_csv2, orient=tk.VERTICAL, command=listbox_cs
 scrollbar_csv2.grid(row=1, column=1, sticky="ns")
 listbox_csv2.configure(yscrollcommand=scrollbar_csv2.set)
 
-btn_load_csv1 = tk.Button(merge_tab, text="Load CSV 1", command=load_csv_1)
+btn_load_csv1 = tk.Button(merge_tab, text="CSV 1 불러오기", command=load_csv_1)
 btn_load_csv1.grid(row=1, column=0, padx=10, pady=5)
 
-btn_load_csv2 = tk.Button(merge_tab, text="Load CSV 2", command=load_csv_2)
+btn_load_csv2 = tk.Button(merge_tab, text="CSV 2 불러오기", command=load_csv_2)
 btn_load_csv2.grid(row=1, column=2, padx=10, pady=5)
 
-key_menu_label = tk.Label(merge_tab, text="Select Key Column:")
+key_menu_label = tk.Label(merge_tab, text="Key 열 선택:")
 key_menu_label.grid(row=2, column=0, columnspan=3)
 
 key_menu = ttk.Combobox(merge_tab, state="readonly")
 key_menu.grid(row=3, column=0, columnspan=3)
 
-btn_merge = tk.Button(merge_tab, text="Merge CSVs", command=merge_csv)
+btn_merge = tk.Button(merge_tab, text="CSV 병합", command=merge_csv)
 btn_merge.grid(row=4, column=0, columnspan=3, pady=10)
 
 # Anonymize CSV UI
 frame_anonymize = tk.Frame(anonymize_tab)
 frame_anonymize.pack(side=tk.TOP, fill=tk.X)
 
-btn_load_csv_anonymize = tk.Button(frame_anonymize, text="Load CSV to Anonymize", command=load_csv_for_anonymize)
+btn_load_csv_anonymize = tk.Button(frame_anonymize, text="익명화할 CSV파일 불러오기", command=load_csv_for_anonymize)
 btn_load_csv_anonymize.pack(side=tk.LEFT, padx=10, pady=10)
 
 settings_listbox = tk.Listbox(anonymize_tab)
@@ -387,7 +387,7 @@ scrollbar_settings = tk.Scrollbar(anonymize_tab, orient=tk.VERTICAL, command=set
 scrollbar_settings.pack(side=tk.RIGHT, fill=tk.Y)
 settings_listbox.configure(yscrollcommand=scrollbar_settings.set)
 
-btn_anonymize = tk.Button(anonymize_tab, text="Perform Anonymization", command=perform_anonymization)
+btn_anonymize = tk.Button(anonymize_tab, text="익명화 수행", command=perform_anonymization)
 btn_anonymize.pack(side=tk.BOTTOM, pady=10)
 
 window.mainloop()
