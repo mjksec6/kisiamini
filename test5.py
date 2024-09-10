@@ -64,6 +64,7 @@ def load_csv_2():
             highlight_common_keys()
 
 
+
 def highlight_common_keys():
     for i in range(listbox_csv1.size()):
         listbox_csv1.itemconfig(i, bg="white")
@@ -221,24 +222,55 @@ def anonymize_csv():
 
 
 
+def cancel_load_csv_for_anonymize():
+    global df_to_anonymize, previous_df_to_anonymize, anonymization_settings, anonymized_columns
+    file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
+    if file_path:
+        df_to_anonymize = load_csv(file_path)
+        if df_to_anonymize is not None:
+            clear_anonymization_frame()
+            anonymization_settings = {}
+            anonymized_columns = []
+            settings_listbox.delete(0, tk.END)
+            for column in df_to_anonymize.columns:
+                add_column_with_button(column)
+
+
+    #     # UI를 초기 상태로 복원
+    #     if df_to_anonymize is not None:
+    #         for column in df_to_anonymize.columns:
+    #             add_column_with_button(column)
+    #     messagebox.showinfo("취소 완료", "CSV 파일 로드가 취소되었습니다.")
+        
+    # else:
+    #     messagebox.showinfo("알림", "취소할 CSV 파일이 없습니다.")
+
+
+
+
 def load_csv_for_anonymize():
-    global df_to_anonymize, anonymization_settings, anonymized_columns
+    global df_to_anonymize, previous_df_to_anonymize, anonymization_settings, anonymized_columns
     file_path = filedialog.askopenfilename(filetypes=[("CSV 파일", "*.csv")])
     if file_path:
         df_to_anonymize = load_csv(file_path)
         if df_to_anonymize is not None:
             # 목록 초기화 및 비식별화 설정 초기화
-            clear_anonymization_frame()
-
             anonymization_settings = {}
             anonymized_columns = []
+            settings_listbox.delete(0, tk.END)
 
+            # UI 요소 활성화
+            # toggle_ui_elements(state=tk.NORMAL)
+
+            clear_anonymization_frame()
             for column in df_to_anonymize.columns:
-                # 각 속성에 대한 항목을 프레임에 추가
                 add_column_with_button(column)
 
-            # 비식별화할 속성만 모아서 CSV로 저장
-            # save_anonymized_columns()
+            btn_anonymize.config(state=tk.NORMAL)
+            btn_cancel_csv_anonymize.config(state=tk.NORMAL)
+
+
+
 
 
 def add_column_with_button(column):
@@ -390,6 +422,9 @@ frame_anonymize.pack(side=tk.TOP, fill=tk.X, padx=10, pady=10, anchor="center")
 
 btn_load_csv_anonymize = tk.Button(frame_anonymize, text="익명화할 CSV파일 불러오기", command=load_csv_for_anonymize)
 btn_load_csv_anonymize.pack(side=tk.LEFT, padx=10, pady=10, anchor="center", expand=True)
+
+btn_cancel_csv_anonymize = tk.Button(anonymize_tab, text="CSV 파일 변경", command=cancel_load_csv_for_anonymize)
+btn_cancel_csv_anonymize.pack(side=tk.BOTTOM, pady=10, expand=True)
 
 settings_listbox = tk.Listbox(anonymize_tab)
 settings_listbox.pack(fill=tk.BOTH, expand=True)
