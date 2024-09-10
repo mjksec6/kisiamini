@@ -238,7 +238,7 @@ def load_csv_for_anonymize():
                 add_column_with_button(column)
 
             # 비식별화할 속성만 모아서 CSV로 저장
-            save_anonymized_columns()
+            # save_anonymized_columns()
 
 
 def add_column_with_button(column):
