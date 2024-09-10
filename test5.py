@@ -321,11 +321,22 @@ window.grid_rowconfigure(0, weight=1)
 window.grid_columnconfigure(0, weight=1)
 
 tab_parent = ttk.Notebook(window)
+tab_parent.grid(row=0, column=0, sticky="nsew")
+window.grid_rowconfigure(0, weight=1)
+window.grid_columnconfigure(0, weight=1)
+
 merge_tab = ttk.Frame(tab_parent)
 anonymize_tab = ttk.Frame(tab_parent)
 tab_parent.add(merge_tab, text="CSV 병합")
 tab_parent.add(anonymize_tab, text="CSV 익명화")
-tab_parent.pack(expand=1, fill='both')
+# tab_parent.pack(expand=1, fill='both')
+
+merge_tab.grid_rowconfigure(0, weight=1)
+merge_tab.grid_columnconfigure(0, weight=1)
+merge_tab.grid_columnconfigure(1, weight=1)
+
+anonymize_tab.grid_rowconfigure(0, weight=1)
+anonymize_tab.grid_columnconfigure(0, weight=1)
 
 # Merge CSV UI
 frame_csv1 = tk.Frame(merge_tab)
@@ -334,15 +345,15 @@ frame_csv1.grid_rowconfigure(1, weight=1)
 frame_csv1.grid_columnconfigure(0, weight=1)
 
 frame_csv2 = tk.Frame(merge_tab)
-frame_csv2.grid(row=0, column=2, padx=10, pady=10, sticky="nswe")
+frame_csv2.grid(row=0, column=1, padx=10, pady=10, sticky="nswe")
 frame_csv2.grid_rowconfigure(1, weight=1)
 frame_csv2.grid_columnconfigure(0, weight=1)
 
 label_csv1 = tk.Label(frame_csv1, text="CSV 1의 열")
-label_csv1.grid(row=0, column=0)
+label_csv1.grid(row=0, column=0, sticky="nsew")
 
 label_csv2 = tk.Label(frame_csv2, text="CSV 2의 열")
-label_csv2.grid(row=0, column=0)
+label_csv2.grid(row=0, column=0, sticky="nsew")
 
 listbox_csv1 = tk.Listbox(frame_csv1)
 listbox_csv1.grid(row=1, column=0, sticky="nswe")
@@ -359,26 +370,26 @@ scrollbar_csv2.grid(row=1, column=1, sticky="ns")
 listbox_csv2.configure(yscrollcommand=scrollbar_csv2.set)
 
 btn_load_csv1 = tk.Button(merge_tab, text="CSV 1 불러오기", command=load_csv_1)
-btn_load_csv1.grid(row=1, column=0, padx=10, pady=5)
+btn_load_csv1.grid(row=2, column=0, padx=10, pady=5, sticky="nsew")
 
 btn_load_csv2 = tk.Button(merge_tab, text="CSV 2 불러오기", command=load_csv_2)
-btn_load_csv2.grid(row=1, column=2, padx=10, pady=5)
+btn_load_csv2.grid(row=2, column=1, padx=10, pady=5, sticky="nsew")
 
 key_menu_label = tk.Label(merge_tab, text="Key 열 선택:")
-key_menu_label.grid(row=2, column=0, columnspan=3)
+key_menu_label.grid(row=3, column=0, columnspan=2, sticky="nsew")
 
 key_menu = ttk.Combobox(merge_tab, state="readonly")
-key_menu.grid(row=3, column=0, columnspan=3)
+key_menu.grid(row=4, column=0, columnspan=2, sticky="nsew")
 
 btn_merge = tk.Button(merge_tab, text="CSV 병합", command=merge_csv)
-btn_merge.grid(row=4, column=0, columnspan=3, pady=10)
+btn_merge.grid(row=5, column=0, columnspan=2, pady=10, sticky="nsew")
 
 # Anonymize CSV UI
 frame_anonymize = tk.Frame(anonymize_tab)
-frame_anonymize.pack(side=tk.TOP, fill=tk.X)
+frame_anonymize.pack(side=tk.TOP, fill=tk.X, padx=10, pady=10, anchor="center")
 
 btn_load_csv_anonymize = tk.Button(frame_anonymize, text="익명화할 CSV파일 불러오기", command=load_csv_for_anonymize)
-btn_load_csv_anonymize.pack(side=tk.LEFT, padx=10, pady=10)
+btn_load_csv_anonymize.pack(side=tk.LEFT, padx=10, pady=10, anchor="center", expand=True)
 
 settings_listbox = tk.Listbox(anonymize_tab)
 settings_listbox.pack(fill=tk.BOTH, expand=True)
@@ -388,6 +399,6 @@ scrollbar_settings.pack(side=tk.RIGHT, fill=tk.Y)
 settings_listbox.configure(yscrollcommand=scrollbar_settings.set)
 
 btn_anonymize = tk.Button(anonymize_tab, text="익명화 수행", command=perform_anonymization)
-btn_anonymize.pack(side=tk.BOTTOM, pady=10)
+btn_anonymize.pack(side=tk.BOTTOM, pady=10, expand=True)
 
 window.mainloop()
